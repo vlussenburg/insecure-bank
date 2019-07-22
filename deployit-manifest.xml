@@ -3,6 +3,7 @@
 	<application />
 	<deployables>
 		<jee.War name="/insecure-bank" file="insecure-bank.war"/>
+	</deployables>
 	<dependencyResolution>LATEST</dependencyResolution>
 	<undeployDependencies>false</undeployDependencies>
 </udm.DeploymentPackage>
