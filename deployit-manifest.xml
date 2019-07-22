@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<udm.DeploymentPackage version="1.0.$BUILD_NUMBER" application="Insecure Bank">
+<udm.DeploymentPackage version="1.0.$BUILD_NUMBER" application="InsecureBank">
 	<application />
 	<deployables>
 		<jee.War name="/insecure-bank" file="insecure-bank.war"/>
