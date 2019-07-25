@@ -17,12 +17,6 @@ pipeline {
         }
         
         stage ('Black Duck SCA') {
-	    agent {
-		docker {
-		    image 'maven:3.5-jdk-8-alpine'
-		}
-	    }
-		
             steps {
                 echo 'Running Synopsys Detect SCA'
                 unstash 'Source'
