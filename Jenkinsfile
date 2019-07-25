@@ -25,6 +25,14 @@ pipeline {
                 synopsys_detect '--detect.tools=DETECTOR --detect.project.name=InsecureBank --detect.project.version.name=Jenkins-CI'
             }
         }
+        stage('Building Docker Image') {
+            steps {
+         		sh '''
+            	#!/bin/bash
+            	docker build -t insecure-bank-web:1.0.$BUILD_NUMBER .
+         	    '''
+    		}
+		}
         
         stage ('XL Deploy') {
             steps {
