@@ -26,12 +26,6 @@ pipeline {
             }
         }
         
-        stage('Build Docker Image') {
-            steps {
-                boisImage = docker.build("bois:1.0.${env.BUILD_NUMBER}")
-            }
-        }
-        
         stage ('XL Deploy') {
             steps {
                 xldCreatePackage artifactsPath: './target/', darPath: '$JOB_NAME-$BUILD_NUMBER.0.dar', manifestPath: './deployit-manifest.xml'
