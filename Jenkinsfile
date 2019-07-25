@@ -22,7 +22,7 @@ pipeline {
                 unstash 'Source'
                 unstash 'warfile'
                 sh 'ls $(pwd)'
-                synopsys_detect '--blackduck.url="https://bizdevhub.blackducksoftware.com" --blackduck.api.token=YmIzNzVmYmEtMGRkZi00YjMzLWIwYzYtZjVmOWYyNmU5OWJmOmFkMGVlY2NjLTQ1M2UtNDQ2NS04NGYzLTQ4ZTJkZWM3YzM4MA== --detect.policy.check.fail.on.severities="CRITICAL" --detect.project.name=InsecureBank" --detect.project.version.name=1.0.$BUILD_NUMBER'
+                synopsys_detect '--detect.policy.check.fail.on.severities=CRITICAL --detect.project.name=InsecureBank --detect.project.version.name=1.0.$BUILD_NUMBER'
 				archiveArtifacts '**/BlackDuck-Report.json'
             }
         }
