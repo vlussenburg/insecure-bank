@@ -9,6 +9,7 @@
 			<environment>
 				<entry key="SEEKER_SERVER_URL">{{SEEKER_SERVER_URL}}</entry>
 				<entry key="JAVA_TOOL_OPTIONS">{{JAVA_TOOL_OPTIONS}}</entry>
+				<entry key="SEEKER_PROJECT_VERSION">1.0.$BUILD_NUMBER</entry>
 			</environment>
 			<showLogsAfter>5</showLogsAfter>
 			<portBindings>
