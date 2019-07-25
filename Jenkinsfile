@@ -27,7 +27,9 @@ pipeline {
         }
         
         stage('Build Docker Image') {
-            boisImage = docker.build("ducky-crm:0.1.${env.BUILD_NUMBER}", "--label com.blackducksoftware.image.has-policy-violations=${POLICY_VIOLATION} ./")
+            steps {
+                boisImage = docker.build("bois:1.0.${env.BUILD_NUMBER}")
+            }
         }
         
         stage ('XL Deploy') {
