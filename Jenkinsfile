@@ -31,7 +31,8 @@ pipeline {
 		unstash 'warfile'
          	sh '''
             	#!/bin/bash
-            	docker build -t insecure-bank-web:1.0.$BUILD_NUMBER .
+            	docker build -t vlussenburg/insecure-bank-web:1.0.$BUILD_NUMBER .
+		docker push vlussenburg/insecure-bank-web:1.0.$BUILD_NUMBER
          	'''
 	    }
 	}
