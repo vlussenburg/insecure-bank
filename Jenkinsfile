@@ -26,6 +26,10 @@ pipeline {
             }
         }
         
+        stage('Build Docker Image') {
+            boisImage = docker.build("ducky-crm:0.1.${env.BUILD_NUMBER}", "--label com.blackducksoftware.image.has-policy-violations=${POLICY_VIOLATION} ./")
+        }
+        
         stage ('XL Deploy') {
             steps {
                 xldCreatePackage artifactsPath: './target/', darPath: '$JOB_NAME-$BUILD_NUMBER.0.dar', manifestPath: './deployit-manifest.xml'
