@@ -5,15 +5,16 @@
 		<jee.War name="/insecure-bank" file="insecure-bank.war"/>
 		<docker.ContainerSpec name="/docker-insecure-bank-web">
 			<containerName>insecure-bank</containerName>
-			<image>vlussenburg/insecure-bank:1.0.0</image>
+			<image>vlussenburg/insecure-bank-web:1.0.$BUILD_NUMBER</image>
 			<environment>
-				<entry key="thekey">thevalue</entry>
+				<entry key="SEEKER_SERVER_URL">{{SEEKER_SERVER_URL}}</entry>
+				<entry key="JAVA_TOOL_OPTIONS">{{JAVA_TOOL_OPTIONS}}</entry>
 			</environment>
 			<showLogsAfter>5</showLogsAfter>
 			<portBindings>
 				<docker.PortSpec name="/docker-insecure-bank-web/pm-80">
 					<hostPort>10081</hostPort>
-					<containerPort>80</containerPort>
+					<containerPort>8080</containerPort>
 				</docker.PortSpec>
 			</portBindings>
 			<volumeBindings />
