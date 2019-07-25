@@ -22,7 +22,7 @@ pipeline {
                 unstash 'Source'
                 unstash 'warfile'
                 sh 'ls $(pwd)'
-                synopsys_detect '--detect.project.name=InsecureBank --detect.project.version.name=Jenkins-CI'
+                synopsys_detect '--detect.tools=DETECTOR --detect.project.name=InsecureBank --detect.project.version.name=Jenkins-CI'
 				archiveArtifacts '**/BlackDuck-Report.json'
             }
         }
