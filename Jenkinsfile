@@ -27,12 +27,14 @@ pipeline {
         }
         stage('Building Docker Image') {
             steps {
-         		sh '''
+		unstash 'source'
+		unstash 'warfile'
+         	sh '''
             	#!/bin/bash
             	docker build -t insecure-bank-web:1.0.$BUILD_NUMBER .
-         	    '''
-    		}
-		}
+         	'''
+	    }
+	}
         
         stage ('XL Deploy') {
             steps {
