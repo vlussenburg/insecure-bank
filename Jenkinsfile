@@ -31,7 +31,7 @@ pipeline {
 		unstash 'warfile'
          	sh '''
             	#!/bin/bash
-            	docker build --build-arg warfile=${WORKSPACE/target/BankOfInsecurities.war} -t insecure-bank-web:1.0.$BUILD_NUMBER .
+            	docker build -t insecure-bank-web:1.0.$BUILD_NUMBER .
          	'''
 	    }
 	}
