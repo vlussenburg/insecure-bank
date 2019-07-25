@@ -28,7 +28,7 @@ pipeline {
                 unstash 'Source'
                 unstash 'warfile'
                 sh 'ls $(pwd)'
-                synopsys_detect '--detect.policy.check.fail.on.severities=CRITICAL --detect.project.name=InsecureBank --detect.project.version.name=1.0.$BUILD_NUMBER'
+                synopsys_detect '--detect.project.name=InsecureBank --detect.project.version.name=Jenkins-CI'
 				archiveArtifacts '**/BlackDuck-Report.json'
             }
         }
