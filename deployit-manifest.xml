@@ -3,6 +3,27 @@
 	<application />
 	<deployables>
 		<jee.War name="/insecure-bank" file="insecure-bank.war"/>
+		<docker.ContainerSpec name="/docker-insecure-bank-web">
+			<containerName>insecure-bank</containerName>
+			<image>vlussenburg/insecure-bank:1.0.0</image>
+			<environment>
+				<entry key="thekey">thevalue</entry>
+			</environment>
+			<showLogsAfter>5</showLogsAfter>
+			<portBindings>
+				<docker.PortSpec name="/docker-insecure-bank-web/pm-80">
+					<hostPort>10081</hostPort>
+					<containerPort>80</containerPort>
+				</docker.PortSpec>
+			</portBindings>
+			<volumeBindings />
+		</docker.ContainerSpec>
+		<docker.NetworkSpec name="/docker-insecure-bank-network">
+			<tags />
+			<networkName>insecure-bank</networkName>
+			<driver>bridge</driver>
+			<networkOptions />
+		</docker.NetworkSpec>
 	</deployables>
 	<dependencyResolution>LATEST</dependencyResolution>
 	<undeployDependencies>false</undeployDependencies>
