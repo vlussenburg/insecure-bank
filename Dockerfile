@@ -5,7 +5,7 @@ FROM jeanblanchard/tomcat:8
 
 RUN echo 'Setting up the Apache Tomcat server ...'
 
-ADD ${WORKSPACE}/target/BankOfInsecurities.war /opt/tomcat/webapps/
+ADD ${warfile} /opt/tomcat/webapps/
 
 # RUN echo $CATALINA_HOME
 
