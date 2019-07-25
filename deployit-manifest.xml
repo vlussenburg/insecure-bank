@@ -12,12 +12,18 @@
 			</environment>
 			<showLogsAfter>5</showLogsAfter>
 			<portBindings>
-				<docker.PortSpec name="/docker-insecure-bank-web/pm-80">
-					<hostPort>10081</hostPort>
+				<docker.PortSpec name="/docker-insecure-bank-web/pm-8080">
+					<hostPort>8080</hostPort>
 					<containerPort>8080</containerPort>
 				</docker.PortSpec>
 			</portBindings>
-			<volumeBindings />
+			<volumeBindings>
+				<docker.MountedVolumeSpec name="/docker-insecure-bank-web/seeker-agent">
+					<volumeName>/opt/seeker-agent/seeker</volumeName>
+					<mountpoint>/seeker</mountpoint>
+					<readOnly>true</readOnly>
+				</docker.MountedVolumeSpec>
+			</volumeBindings>
 		</docker.ContainerSpec>
 		<docker.NetworkSpec name="/docker-insecure-bank-network">
 			<tags />
