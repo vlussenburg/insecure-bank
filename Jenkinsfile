@@ -6,9 +6,9 @@ pipeline {
             parallel {
                 stage('Package Evaluation') {
                     steps {
-                        echo 'Running Synopsys Detect SCA'
+                        echo 'Running Package Manager SCA'
                         sh 'ls $(pwd)'
-                        synopsys_detect '--detect.tools=DETECTOR --detect.project.name=InsecureBank-Packages --detect.project.version.name=branch-$BRANCH_NAME'
+                        synopsys_detect '--detect.tools=DETECTOR --detect.project.name=InsecureBank-Packages --detect.project.version.name=branch-${BRANCH_NAME}'
                     }
                 }
                 stage('Build Artifact') {
@@ -28,29 +28,30 @@ pipeline {
 
         stage ('Post-Build SCA') {
             steps {
-                echo 'Running Black Duck Scans'
+                echo 'Running Black Duck FileSystem and Binary Scans'
                 unstash 'Source'
                 unstash 'warfile'
                 sh 'ls $(pwd)'
-                synopsys_detect '--detect.project.name=InsecureBank --detect.project.version.name=App-Build-$BUILD_NUMBER'
+                synopsys_detect '--detect.project.name=InsecureBank --detect.project.version.name=App-Build-${BUILD_NUMBER} --detect.binary.scan.file.path=./target/insecure-bank.war'
             }
         }
 
-        stage('Building Docker Image') {
+        stage('Docker Image Build') {
             steps {
                 unstash 'Source'
                 unstash 'warfile'
                 sh '''
                     #!/bin/bash
-                    docker build -t vlussenburg/insecure-bank-web:1.0.$BUILD_NUMBER .
-                    docker push vlussenburg/insecure-bank-web:1.0.$BUILD_NUMBER
+                    docker build -t vlussenburg/insecure-bank-web:1.0.${BUILD_NUMBER} .
+                    docker push vlussenburg/insecure-bank-web:1.0.${BUILD_NUMBER}
                     '''
             }
         }
 
-        stage('Container SCA - Base Image') {
+        stage('Container SCA - Base Image Packages') {
             steps  {
-                synopsys_detect '--detect.tools=DOCKER --detect.project.name=InsecureBank --detect.project.version.name=Container-Build-$BUILD_NUMBER --detect.docker.image=vlussenburg/insecure-bank-web:1.0.$BUILD_NUMBER'
+                echo 'Scanning Container Base Image Packages'
+                synopsys_detect '--detect.tools=DOCKER --detect.project.name=InsecureBank --detect.project.version.name=Container-Build-${BUILD_NUMBER} --detect.docker.image=vlussenburg/insecure-bank-web:1.0.${BUILD_NUMBER}'
             }
         }
 
