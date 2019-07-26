@@ -5,3 +5,6 @@ target
 build.xml
 /.apt_generated/
 /.apt_generated_tests/
+.idea
+insecure-bank.iml
+

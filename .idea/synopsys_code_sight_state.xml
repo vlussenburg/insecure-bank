@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="SynopsysCodeSightSettings">
+    <option name="columnStates">
+      <list>
+        <ColumnState>
+          <option name="name" value="" />
+          <option name="width" value="35" />
+        </ColumnState>
+        <ColumnState>
+          <option name="name" value="Type" />
+          <option name="width" value="75" />
+        </ColumnState>
+        <ColumnState>
+          <option name="name" value="Location" />
+          <option name="width" value="75" />
+        </ColumnState>
+        <ColumnState>
+          <option name="name" value="Scans" />
+          <option name="width" value="75" />
+        </ColumnState>
+        <ColumnState>
+          <option name="name" value="First Detected" />
+          <option name="width" value="75" />
+        </ColumnState>
+      </list>
+    </option>
+    <option name="filters">
+      <list>
+        <Filter>
+          <option name="filterType" value="FileScope" />
+          <option name="filterValue" value="$PROJECT_DIR$/.gitignore" />
+        </Filter>
+      </list>
+    </option>
+  </component>
+</project>
