@@ -8,7 +8,7 @@ pipeline {
                     steps {
                         echo 'Running Package Manager SCA'
                         sh 'ls $(pwd)'
-                        synopsys_detect '--detect.tools=DETECTOR --detect.project.name=InsecureBank-Packages --detect.project.version.name=branch-${BRANCH_NAME}'
+                        synopsys_detect '--detect.tools=DETECTOR --detect.project.name=InsecureBank-Packages --detect.project.version.name=Packages-1.0.${BUILD_NUMBER}'
                     }
                 }
                 stage('Build Artifact') {
@@ -32,7 +32,7 @@ pipeline {
                 unstash 'Source'
                 unstash 'warfile'
                 sh 'ls $(pwd)'
-                synopsys_detect '--detect.project.name=InsecureBank --detect.project.version.name=App-Build-${BUILD_NUMBER} --detect.binary.scan.file.path=./target/insecure-bank.war'
+                synopsys_detect '--detect.project.name=InsecureBank --detect.project.version.name=App-Build-1.0.${BUILD_NUMBER} --detect.binary.scan.file.path=./target/insecure-bank.war'
             }
         }
 
@@ -51,7 +51,7 @@ pipeline {
         stage('Container SCA - Base Image Packages') {
             steps  {
                 echo 'Scanning Container Base Image Packages'
-                synopsys_detect '--detect.tools=DOCKER --detect.project.name=InsecureBank --detect.project.version.name=Container-Build-${BUILD_NUMBER} --detect.docker.image=vlussenburg/insecure-bank-web:1.0.${BUILD_NUMBER}'
+                synopsys_detect '--detect.tools=DOCKER --detect.project.name=InsecureBank --detect.project.version.name=Container-Build-1.0.${BUILD_NUMBER} --detect.docker.image=vlussenburg/insecure-bank-web:1.0.${BUILD_NUMBER}'
             }
         }
 
