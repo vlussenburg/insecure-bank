@@ -2,40 +2,59 @@ pipeline {
     agent any
     
     stages {
-        stage ('CodeBuild') {
-            agent {
-                docker {
-                    image 'maven:3.5-jdk-8-alpine'
+        stage ('Build-Time SCA & Build') {
+            parallel {
+                stage('Package Evaluation') {
+                    steps {
+                        echo 'Running Package Manager SCA'
+                        sh 'ls $(pwd)'
+                        synopsys_detect '--detect.tools=DETECTOR --detect.project.name=InsecureBank --detect.project.version.name=Packages-1.0.${BUILD_NUMBER}'
+                    }
+                }
+                stage('Build Artifact') {
+                    agent {
+                        docker {
+                            image 'maven:3.5-jdk-8-alpine'
+                        }
+                    }
+                    steps {
+                        sh 'mvn clean package -DskipTests'
+                        stash includes:'**/target/insecure-bank.war', name:'warfile'
+                        stash includes: '**/**', name: 'Source'
+                    }
                 }
             }
-            
-            steps {
-                sh 'mvn clean package -DskipTests'
-                stash includes:'**/target/insecure-bank.war', name:'warfile'
-                stash includes: '**/**', name: 'Source'
-            }
         }
-        
-        stage ('Black Duck SCA') {
+
+        stage ('Post-Build SCA') {
             steps {
-                echo 'Running Synopsys Detect SCA'
+                echo 'Running Black Duck FileSystem and Binary Scans'
                 unstash 'Source'
                 unstash 'warfile'
                 sh 'ls $(pwd)'
-                synopsys_detect '--detect.tools=DETECTOR --detect.project.name=InsecureBank --detect.project.version.name=Jenkins-CI'
+                synopsys_detect '--detect.project.name=InsecureBank --detect.project.version.name=App-Build-1.0.${BUILD_NUMBER} --detect.binary.scan.file.path=./target/insecure-bank.war'
             }
         }
-        stage('Building Docker Image') {
+
+        stage('Docker Image Build') {
             steps {
-		unstash 'Source'
-		unstash 'warfile'
-         	sh '''
-            	#!/bin/bash
-            	docker build -t vlussenburg/insecure-bank-web:1.0.$BUILD_NUMBER .
-		docker push vlussenburg/insecure-bank-web:1.0.$BUILD_NUMBER
-         	'''
-	    }
-	}
+                unstash 'Source'
+                unstash 'warfile'
+                sh '''
+                    #!/bin/bash
+                    docker build -t vlussenburg/insecure-bank-web:1.0.${BUILD_NUMBER} .
+                    docker push vlussenburg/insecure-bank-web:1.0.${BUILD_NUMBER}
+                    '''
+            }
+        }
+
+        stage('Container SCA - Base Image Packages') {
+            steps  {
+                echo 'Scanning Container Base Image Packages'
+                synopsys_detect '--detect.tools=DOCKER --detect.project.name=InsecureBank --detect.project.version.name=Container-Build-1.0.${BUILD_NUMBER} --detect.docker.image=vlussenburg/insecure-bank-web:1.0.${BUILD_NUMBER}'
+            }
+        }
+
         
         stage ('XL Deploy') {
             steps {
