@@ -8,7 +8,7 @@ pipeline {
                     steps {
                         echo 'Running Package Manager SCA'
                         sh 'ls $(pwd)'
-                        synopsys_detect '--detect.tools=DETECTOR --detect.project.name=InsecureBank-Packages --detect.project.version.name=Packages-1.0.${BUILD_NUMBER}'
+                        synopsys_detect '--detect.tools=DETECTOR --detect.project.name=InsecureBank --detect.project.version.name=Packages-1.0.${BUILD_NUMBER}'
                     }
                 }
                 stage('Build Artifact') {
