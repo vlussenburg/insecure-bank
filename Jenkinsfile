@@ -23,7 +23,8 @@ pipeline {
                         unstash 'Source'
                         unstash 'warfile'
                         sh 'ls $(pwd)'
-                        synopsys_detect '--detect.project.name=InsecureBank-TG --detect.project.version.name=App-Build-1.0.${BUILD_NUMBER} --detect.code.location.name=application'
+                        synopsys_detect '--detect.project.name=InsecureBank --detect.project.version.name=App-Build-1.0.${BUILD_NUMBER} --detect.code.location.name=application'
+
                     }
                 }
 
@@ -32,7 +33,7 @@ pipeline {
                         echo 'Scanning with Black Duck Binary Analysis'
                         unstash 'warfile'
                         sh 'ls $(pwd)'
-                        synopsys_detect '--detect.project.name=InsecureBank-TG --detect.project.version.name=App-Build-1.0.${BUILD_NUMBER} --detect.tools=BINARY_SCAN --detect.binary.scan.file.path=./target/insecure-bank.war --detect.code.location.name=warfile'
+                        synopsys_detect '--detect.project.name=InsecureBank --detect.project.version.name=App-Build-1.0.${BUILD_NUMBER} --detect.tools=BINARY_SCAN --detect.binary.scan.file.path=./target/insecure-bank.war --detect.code.location.name=warfile'
                     }
                 }
             }
@@ -53,12 +54,12 @@ pipeline {
         stage('Container SCA - Base Image') {
             steps  {
                 echo 'Scanning Base Image Packages'
-                synopsys_detect '--detect.tools=DOCKER --detect.project.name=InsecureBank-TG --detect.project.version.name=App-Build-1.0.${BUILD_NUMBER} --detect.docker.image=vlussenburg/insecure-bank-web:1.0.${BUILD_NUMBER} --detect.code.location.name=tomcat-base-image'
+                synopsys_detect '--detect.tools=DOCKER --detect.project.name=InsecureBank --detect.project.version.name=App-Build-1.0.${BUILD_NUMBER} --detect.docker.image=vlussenburg/insecure-bank-web:1.0.${BUILD_NUMBER} --detect.code.location.name=tomcat-base-image'
             }
         }
 
         
-        /* stage ('XL Deploy') {
+        stage ('XL Deploy') {
             steps {
                 xldCreatePackage artifactsPath: './target/', darPath: '$JOB_NAME-$BUILD_NUMBER.0.dar', manifestPath: './deployit-manifest.xml'
                 xldPublishPackage serverCredentials: 'XL Deploy', darPath: '$JOB_NAME-$BUILD_NUMBER.0.dar'
@@ -68,23 +69,9 @@ pipeline {
         
         stage ('XL Release') {
             steps {
-                xlrCreateRelease releaseTitle: 'Release for $BUILD_TAG', serverCredentials: 'XL Release', startRelease: true, template: 'Samples & Tutorials/Sample Release Template with XL Deploy', variables: [[propertyName: 'packageId', propertyValue: 'Applications/InsecureBank/1.0.$BUILD_NUMBER'], [propertyName: 'ACC environment', propertyValue: 'Environments/dev'], [propertyName: 'QA environment', propertyValue: 'Environments/dev']]
+                xlrCreateRelease releaseTitle: 'Release for $BUILD_TAG', serverCredentials: 'XL Release', startRelease: true, template: 'Samples & Tutorials/Sample Release Template with XL Deploy', variables: [[propertyName: 'packageId', propertyValue: 'Applications/InsecureBank/1.0.$BUILD_NUMBER'], [propertyName: 'application', propertyValue: 'InsecureBank'], [propertyName: 'packageVersion', propertyValue: '1.0.$BUILD_NUMBER'], [propertyName: 'ACC environment', propertyValue: 'Environments/dev'], [propertyName: 'QA environment', propertyValue: 'Environments/dev']]
             }
-        } */
-        
-        
-        /* stage ('Test-time Deploy') {
-            steps {
-                print 'Deploy to Tomcat'
-                unstash 'warfile'
-                sh 'sudo /opt/deployment/tomcat/apache-tomcat-8.5.28/bin/shutdown.sh'
-                sh 'sudo cp $(pwd)/target/insecure-bank.war /opt/deployment/tomcat/apache-tomcat-8.5.28/webapps'
-              
-                sh 'sudo /opt/deployment/tomcat/apache-tomcat-8.5.28/bin/startup.sh'
-                sleep 45
-                print 'Application Deployed to test'
-            }
-        }*/
+        }
     }
     
     post {
