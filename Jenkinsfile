@@ -18,13 +18,13 @@ pipeline {
         stage ('Post-Build SCA') {
             parallel {
                 stage('Black Duck FileSystem and Package Scan') {
-                     steps {
-                         echo 'Scanning with Black Duck'
-                         unstash 'Source'
-                         unstash 'warfile'
-                         sh 'ls $(pwd)'
-                         synopsys_detect '--detect.project.name=InsecureBank-TG --detect.project.version.name=App-Build-1.0.${BUILD_NUMBER} --detect.code.location.name=application'
-                     }
+                    steps {
+                        echo 'Scanning with Black Duck'
+                        unstash 'Source'
+                        unstash 'warfile'
+                        sh 'ls $(pwd)'
+                        synopsys_detect '--detect.project.name=InsecureBank-TG --detect.project.version.name=App-Build-1.0.${BUILD_NUMBER} --detect.code.location.name=application'
+                    }
                 }
 
                 stage('Black Duck Binary Scan') {
