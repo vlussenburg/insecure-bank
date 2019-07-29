@@ -63,7 +63,6 @@ pipeline {
             steps {
                 xldCreatePackage artifactsPath: './target/', darPath: '$JOB_NAME-$BUILD_NUMBER.0.dar', manifestPath: './deployit-manifest.xml'
                 xldPublishPackage serverCredentials: 'XL Deploy', darPath: '$JOB_NAME-$BUILD_NUMBER.0.dar'
-                 *//*xldDeploy environmentId: 'Environments/dev', packageId: 'Applications/InsecureBank/1.0.$BUILD_NUMBER', serverCredentials: 'XL Deploy'*//*
             }
         }
         
