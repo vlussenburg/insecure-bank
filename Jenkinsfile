@@ -23,7 +23,7 @@ pipeline {
                         unstash 'Source'
                         unstash 'warfile'
                         sh 'ls $(pwd)'
-                        synopsys_detect '--detect.project.name=InsecureBank --detect.project.version.name=App-Build-1.0.${BUILD_NUMBER} --detect.code.location.name=application'
+                        synopsys_detect '--detect.project.name=InsecureBank --detect.project.version.name=App-Build-1.0.${BUILD_NUMBER} --detect.code.location.name=bois-application'
 
                     }
                 }
@@ -33,7 +33,7 @@ pipeline {
                         echo 'Scanning with Black Duck Binary Analysis'
                         unstash 'warfile'
                         sh 'ls $(pwd)'
-                        synopsys_detect '--detect.project.name=InsecureBank --detect.project.version.name=App-Build-1.0.${BUILD_NUMBER} --detect.tools=BINARY_SCAN --detect.binary.scan.file.path=./target/insecure-bank.war --detect.code.location.name=warfile'
+                        synopsys_detect '--detect.project.name=InsecureBank --detect.project.version.name=App-Build-1.0.${BUILD_NUMBER} --detect.tools=BINARY_SCAN --detect.binary.scan.file.path=./target/insecure-bank.war --detect.code.location.name=bois-warfile'
                     }
                 }
             }
@@ -54,7 +54,7 @@ pipeline {
         stage('Container SCA - Base Image') {
             steps  {
                 echo 'Scanning Base Image Packages'
-                synopsys_detect '--detect.tools=DOCKER --detect.project.name=InsecureBank --detect.project.version.name=App-Build-1.0.${BUILD_NUMBER} --detect.docker.image=vlussenburg/insecure-bank-web:1.0.${BUILD_NUMBER} --detect.code.location.name=tomcat-base-image'
+                synopsys_detect '--detect.tools=DOCKER --detect.project.name=InsecureBank --detect.project.version.name=App-Build-1.0.${BUILD_NUMBER} --detect.docker.image=vlussenburg/insecure-bank-web:1.0.${BUILD_NUMBER} --detect.code.location.name=bois-tomcat-base-image'
             }
         }
 
