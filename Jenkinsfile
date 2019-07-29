@@ -16,12 +16,25 @@ pipeline {
         }
 
         stage ('Post-Build SCA') {
-            steps {
-                echo 'Scanning with Black Duck'
-                unstash 'Source'
-                unstash 'warfile'
-                sh 'ls $(pwd)'
-                synopsys_detect '--detect.project.name=InsecureBank-TG --detect.project.version.name=App-Build-1.0.${BUILD_NUMBER} --detect.binary.scan.file.path=./target/insecure-bank.war --detect.code.location.name=application'
+            parallel {
+                stage('Black Duck FileSystem and Package Scan') {
+                     steps {
+                         echo 'Scanning with Black Duck'
+                         unstash 'Source'
+                         unstash 'warfile'
+                         sh 'ls $(pwd)'
+                         synopsys_detect '--detect.project.name=InsecureBank-TG --detect.project.version.name=App-Build-1.0.${BUILD_NUMBER} --detect.code.location.name=application'
+                     }
+                }
+
+                stage('Black Duck Binary Scan') {
+                    steps {
+                        echo 'Scanning with Black Duck Binary Analysis'
+                        unstash 'warfile'
+                        sh 'ls $(pwd)'
+                        synopsys_detect '--detect.project.name=InsecureBank-TG --detect.project.version.name=App-Build-1.0.${BUILD_NUMBER} --detect.tools=BINARY_SCAN --detect.binary.scan.file.path=./target/insecure-bank.war --detect.code.location.name=warfile'
+                    }
+                }
             }
         }
 
