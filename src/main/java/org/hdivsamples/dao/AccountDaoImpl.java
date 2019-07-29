@@ -18,7 +18,7 @@ public class AccountDaoImpl implements AccountDao {
 	@Override
 	public List<Account> findUsersByUsernameAndPassword(final String username, final String password) {
 
-		String str = "select * from account where username='" + username + "' AND password='" + password + "'";
+		String str = "select * from account where username = ? AND password = ?";
 	
 		RowMapper<Account> rowMapper = new RowMapper<Account>() {
 			@Override
@@ -32,7 +32,7 @@ public class AccountDaoImpl implements AccountDao {
 			}
 		};
 
-		return jdbcTemplate.query(str, rowMapper);
+		return jdbcTemplate.query(str, rowMapper, new Object[] { username, password });
 	}
 
 	@Override
