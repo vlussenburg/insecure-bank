@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<udm.DeploymentPackage version="1.0.$BUILD_NUMBER" application="InsecureBank">
+	<application />
+	<deployables>
+		<jee.War name="/insecure-bank" file="insecure-bank.war"/>
+		<docker.ContainerSpec name="/docker-insecure-bank-web">
+			<containerName>insecure-bank</containerName>
+			<image>vlussenburg/insecure-bank-web:1.0.$BUILD_NUMBER</image>
+			<environment>
+				<entry key="SEEKER_SERVER_URL">{{SEEKER_SERVER_URL}}</entry>
+				<entry key="JAVA_TOOL_OPTIONS">{{JAVA_TOOL_OPTIONS}}</entry>
+				<entry key="SEEKER_PROJECT_VERSION">1.0.$BUILD_NUMBER</entry>
+			</environment>
+			<showLogsAfter>5</showLogsAfter>
+			<portBindings>
+				<docker.PortSpec name="/docker-insecure-bank-web/pm-8080">
+					<hostPort>8080</hostPort>
+					<containerPort>8080</containerPort>
+				</docker.PortSpec>
+			</portBindings>
+			<volumeBindings>
+				<docker.MountedVolumeSpec name="/docker-insecure-bank-web/seeker-agent">
+					<volumeName>/opt/seeker-agent/seeker</volumeName>
+					<mountpoint>/seeker</mountpoint>
+					<readOnly>true</readOnly>
+				</docker.MountedVolumeSpec>
+			</volumeBindings>
+		</docker.ContainerSpec>
+		<docker.NetworkSpec name="/docker-insecure-bank-network">
+			<tags />
+			<networkName>insecure-bank</networkName>
+			<driver>bridge</driver>
+			<networkOptions />
+		</docker.NetworkSpec>
+	</deployables>
+	<dependencyResolution>LATEST</dependencyResolution>
+	<undeployDependencies>false</undeployDependencies>
+</udm.DeploymentPackage>
