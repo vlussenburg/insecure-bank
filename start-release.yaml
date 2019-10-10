@@ -4,3 +4,5 @@ spec:
   name: Ecommerce started from Bamboo
   autoStart: false
   template: Ecommerce/EcommerceAppReleaseProcess
+  variables:
+    applicationVersion: !value BUILD_NUMBER
