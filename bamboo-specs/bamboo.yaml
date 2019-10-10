@@ -1,5 +1,8 @@
 ---
 version: 2
+variables: # In case of storing raw passwords, import will fail. 
+  password: BAMSCRT@0@0@tD/Vy/s8NErYyFQGynAhOA==
+
 plan:
   project-key: IN
   key: INSECUREBANK
@@ -13,5 +16,4 @@ Build:
   tasks:
     - script:
       - ./mvnw clean package -DskipTests
-      - echo 'BAMSCRT@0@0@tD/Vy/s8NErYyFQGynAhOA=='
-      - ./xlw apply -v --values=BUILD_NUMBER=${bamboo.buildNumber} --xl-release-url http://xl-release:5516 --xl-release-password BAMSCRT@0@0@tD/Vy/s8NErYyFQGynAhOA== --xl-deploy-url http://xl-deploy:4516 --xl-deploy-password BAMSCRT@0@0@tD/Vy/s8NErYyFQGynAhOA== -f start-release.yaml
+      - ./xlw apply -v --values=BUILD_NUMBER=${bamboo.buildNumber} --xl-release-url http://xl-release:5516 --xl-release-password ${password} --xl-deploy-url http://xl-deploy:4516 --xl-deploy-password ${password}  -f start-release.yaml
