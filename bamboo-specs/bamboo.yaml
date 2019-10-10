@@ -2,7 +2,7 @@
 version: 2
 plan:
   project-key: IN
-  key: INSECURE-BANK
+  key: INSECUREBANK
   name: Build the bank
 
 stages:
