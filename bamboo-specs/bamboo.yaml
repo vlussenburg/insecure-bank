@@ -4,6 +4,8 @@ plan:
   project-key: IN
   key: ROCKET
   name: Build the rocket
+
+dockerImage: maven:3.5-jdk-8-alpine
 stages:
   - Build hull:
     - Build
