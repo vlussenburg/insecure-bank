@@ -6,11 +6,10 @@ plan:
   name: Build the bank
 
 stages:
-  - Build hull:
+  - Build bank:
     - Build
 
 Build:
   tasks:
     - script:
       - ./mvnw clean package -DskipTests
-      - docker build -t insecure-bank-web:${bamboo.buildKey} .
