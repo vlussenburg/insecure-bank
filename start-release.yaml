@@ -3,6 +3,6 @@ kind: Release
 spec:
   name: Ecommerce started from Bamboo
   autoStart: false
-  template: Ecommerce/EcommerceAppReleaseProcess
+  template: Ecommerce/EcommerceAppReleaseProcess-atlassianStack
   variables:
     applicationVersion: !value BUILD_NUMBER
