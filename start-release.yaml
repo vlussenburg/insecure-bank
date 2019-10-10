@@ -2,4 +2,5 @@ apiVersion: xl-release/v1
 kind: Release
 spec:
   name: Ecommerce started from Jenkins
+  autoStart: false
   template: Ecommerce/EcommerceAppReleaseProcess
