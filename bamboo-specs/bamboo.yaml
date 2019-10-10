@@ -2,10 +2,9 @@
 version: 2
 plan:
   project-key: IN
-  key: ROCKET
-  name: Build the rocket
+  key: INSECURE-BANK
+  name: Build the bank
 
-dockerImage: maven:3.5-jdk-8-alpine
 stages:
   - Build hull:
     - Build
@@ -13,4 +12,5 @@ stages:
 Build:
   tasks:
     - script:
-      - echo 'Hello World!'
+      - ./mvnw clean package -DskipTests
+      - docker build -t insecure-bank-web:${bamboo.buildKey} .
