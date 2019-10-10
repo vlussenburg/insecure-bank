@@ -1,6 +1,6 @@
 apiVersion: xl-release/v1
 kind: Release
 spec:
-  name: Ecommerce started from Jenkins
+  name: Ecommerce started from Bamboo
   autoStart: false
   template: Ecommerce/EcommerceAppReleaseProcess
