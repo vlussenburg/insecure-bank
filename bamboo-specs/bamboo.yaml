@@ -16,4 +16,4 @@ Build:
   tasks:
     - script:
       - ./mvnw clean package -DskipTests
-      - ./xlw apply -v --values=BUILD_NUMBER=${bamboo.buildNumber} --xl-release-url http://xl-release:5516 --xl-release-password ${password} --xl-deploy-url http://xl-deploy:4516 --xl-deploy-password ${password} -f start-release.yaml
+      - ./xlw apply -v --values=BUILD_NUMBER=${bamboo.buildNumber} --xl-release-url http://xl-release:5516 --xl-release-password ${bamboo.password} --xl-deploy-url http://xl-deploy:4516 --xl-deploy-password ${bamboo.password} -f start-release.yaml
