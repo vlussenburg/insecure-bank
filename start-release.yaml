@@ -1,7 +1,7 @@
 apiVersion: xl-release/v1
 kind: Release
 spec:
-  name: Ecommerce started from Bamboo
+  name: Ecommerce started from Bamboo demo of Friday
   autoStart: false
   template: Ecommerce/EcommerceAppReleaseProcess-atlassianStack
   variables:
