@@ -46,7 +46,7 @@ pipeline {
         }*/
 
         
-        stage ('XL Deploy') {
+        /*stage ('XL Deploy') {
             steps {
                 //sh "./xlw apply -v --values=PACKAGE_NAME=Applications/$BUILD_NUMBER --values=IMAGE=vlussenburg/backtrace-webapp:$BUILD_NUMBER --values=APPLICATION_VERSION=$BUILD_NUMBER --xl-release-password ${xlr_password} --xl-deploy-password ${xld_password} -f xebialabs.yaml"
                 //xldCreatePackage artifactsPath: './target/', darPath: '$JOB_NAME-$BUILD_NUMBER.0.dar', manifestPath: './deployit-manifest.xml'
@@ -59,7 +59,7 @@ pipeline {
                 //sh './xlw apply -v --values=BUILD_NUMBER=${BUILD_NUMBER} --xl-release-url http://xl-release:5516 --xl-release-password ${xlr_password} --xl-deploy-url http://xl-deploy:4516 --xl-deploy-password ${xld_password} -f start-release.yaml'
                 // xlrCreateRelease releaseTitle: 'Release for $BUILD_TAG', serverCredentials: 'XL Release', startRelease: true, template: 'Samples & Tutorials/Sample Release Template with XL Deploy', variables: [[propertyName: 'packageId', propertyValue: 'Applications/InsecureBank/1.0.$BUILD_NUMBER'], [propertyName: 'application', propertyValue: 'InsecureBank'], [propertyName: 'packageVersion', propertyValue: '1.0.$BUILD_NUMBER'], [propertyName: 'ACC environment', propertyValue: 'Environments/dev'], [propertyName: 'QA environment', propertyValue: 'Environments/dev']]
             }
-        }
+        }*/
     }
     
     post {
