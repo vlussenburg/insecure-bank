@@ -34,18 +34,15 @@ pipeline {
 
         stage('Docker Image Build') {
             steps {
-                unstash 'Source'
-                unstash 'warfile'
                 sh '''
                     #!/bin/bash
                     docker build -t vlussenburg/insecure-bank-web:1.0.${BUILD_NUMBER} .
-                    docker push vlussenburg/insecure-bank-web:1.0.${BUILD_NUMBER}
                     '''
             }
         }
 
         /*stage('Container SCA - Base Image') {
-            steps  {
+            steps  {                     docker push vlussenburg/insecure-bank-web:1.0.${BUILD_NUMBER}
                 echo 'Scanning Base Image Packages'
                 synopsys_detect '--detect.tools=DOCKER --detect.project.name=InsecureBank --detect.project.version.name=App-Build-1.0.${BUILD_NUMBER} --detect.docker.image=vlussenburg/insecure-bank-web:1.0.${BUILD_NUMBER} --detect.code.location.name=bois-tomcat-base-image'
             }
