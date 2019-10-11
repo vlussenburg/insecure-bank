@@ -3,19 +3,14 @@ pipeline {
     
     stages {
         stage ('Build Application') {
-            agent {
-                docker {
-                    image 'maven:3.5-jdk-8-alpine'
-                }
-            }
             steps {
-                sh 'mvn clean package -DskipTests'
-                stash includes:'**/target/insecure-bank.war', name:'warfile'
-                stash includes: '**/**', name: 'Source'
+                sh './mvnw clean package -DskipTests'
+                //stash includes:'**/target/insecure-bank.war', name:'warfile'
+                //stash includes: '**/**', name: 'Source'
             }
         }
 
-        stage ('Post-Build SCA') {
+        /*stage ('Post-Build SCA') {
             parallel {
                 stage('Black Duck FileSystem and Package Scan') {
                     steps {
@@ -37,7 +32,7 @@ pipeline {
                     }
                 }
             }
-        }
+        }*/
 
         stage('Docker Image Build') {
             steps {
@@ -51,24 +46,27 @@ pipeline {
             }
         }
 
-        stage('Container SCA - Base Image') {
+        /*stage('Container SCA - Base Image') {
             steps  {
                 echo 'Scanning Base Image Packages'
                 synopsys_detect '--detect.tools=DOCKER --detect.project.name=InsecureBank --detect.project.version.name=App-Build-1.0.${BUILD_NUMBER} --detect.docker.image=vlussenburg/insecure-bank-web:1.0.${BUILD_NUMBER} --detect.code.location.name=bois-tomcat-base-image'
             }
-        }
+        }*/
 
         
         stage ('XL Deploy') {
             steps {
-                xldCreatePackage artifactsPath: './target/', darPath: '$JOB_NAME-$BUILD_NUMBER.0.dar', manifestPath: './deployit-manifest.xml'
-                xldPublishPackage serverCredentials: 'XL Deploy', darPath: '$JOB_NAME-$BUILD_NUMBER.0.dar'
+                sh "./xlw apply -v --values=PACKAGE_NAME=Applications/\
+                /$BUILD_NUMBER --values=IMAGE=vlussenburg/backtrace-webapp:$BUILD_NUMBER --values=APPLICATION_VERSION=$BUILD_NUMBER --xl-release-password ${xlr_password} --xl-deploy-password ${xld_password} -f xebialabs.yaml"
+                //xldCreatePackage artifactsPath: './target/', darPath: '$JOB_NAME-$BUILD_NUMBER.0.dar', manifestPath: './deployit-manifest.xml'
+                //xldPublishPackage serverCredentials: 'XL Deploy', darPath: '$JOB_NAME-$BUILD_NUMBER.0.dar'
             }
         }
         
         stage ('XL Release') {
             steps {
-                xlrCreateRelease releaseTitle: 'Release for $BUILD_TAG', serverCredentials: 'XL Release', startRelease: true, template: 'Samples & Tutorials/Sample Release Template with XL Deploy', variables: [[propertyName: 'packageId', propertyValue: 'Applications/InsecureBank/1.0.$BUILD_NUMBER'], [propertyName: 'application', propertyValue: 'InsecureBank'], [propertyName: 'packageVersion', propertyValue: '1.0.$BUILD_NUMBER'], [propertyName: 'ACC environment', propertyValue: 'Environments/dev'], [propertyName: 'QA environment', propertyValue: 'Environments/dev']]
+                sh './xlw apply -v --values=BUILD_NUMBER=${BUILD_NUMBER} --xl-release-url http://xl-release:5516 --xl-release-password ${xlr_password} --xl-deploy-url http://xl-deploy:4516 --xl-deploy-password ${xld_password} -f start-release.yaml'
+                // xlrCreateRelease releaseTitle: 'Release for $BUILD_TAG', serverCredentials: 'XL Release', startRelease: true, template: 'Samples & Tutorials/Sample Release Template with XL Deploy', variables: [[propertyName: 'packageId', propertyValue: 'Applications/InsecureBank/1.0.$BUILD_NUMBER'], [propertyName: 'application', propertyValue: 'InsecureBank'], [propertyName: 'packageVersion', propertyValue: '1.0.$BUILD_NUMBER'], [propertyName: 'ACC environment', propertyValue: 'Environments/dev'], [propertyName: 'QA environment', propertyValue: 'Environments/dev']]
             }
         }
     }
