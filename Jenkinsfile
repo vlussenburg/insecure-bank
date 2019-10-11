@@ -56,8 +56,7 @@ pipeline {
         
         stage ('XL Deploy') {
             steps {
-                sh "./xlw apply -v --values=PACKAGE_NAME=Applications/\
-                /$BUILD_NUMBER --values=IMAGE=vlussenburg/backtrace-webapp:$BUILD_NUMBER --values=APPLICATION_VERSION=$BUILD_NUMBER --xl-release-password ${xlr_password} --xl-deploy-password ${xld_password} -f xebialabs.yaml"
+                sh "./xlw apply -v --values=PACKAGE_NAME=Applications/$BUILD_NUMBER --values=IMAGE=vlussenburg/backtrace-webapp:$BUILD_NUMBER --values=APPLICATION_VERSION=$BUILD_NUMBER --xl-release-password ${xlr_password} --xl-deploy-password ${xld_password} -f xebialabs.yaml"
                 //xldCreatePackage artifactsPath: './target/', darPath: '$JOB_NAME-$BUILD_NUMBER.0.dar', manifestPath: './deployit-manifest.xml'
                 //xldPublishPackage serverCredentials: 'XL Deploy', darPath: '$JOB_NAME-$BUILD_NUMBER.0.dar'
             }
