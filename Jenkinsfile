@@ -5,8 +5,6 @@ pipeline {
         stage ('Build Application') {
             steps {
                 sh './mvnw clean package -DskipTests'
-                //stash includes:'**/target/insecure-bank.war', name:'warfile'
-                //stash includes: '**/**', name: 'Source'
             }
         }
 
